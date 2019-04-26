@@ -3,14 +3,14 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 
 var bodyParser = require('body-parser');
-var logger = require('morgan');
+// var logger = require('morgan');
 var mongoose = require('mongoose');
 const app = express();
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -21,8 +21,11 @@ if (process.env.NODE_ENV === "production") {
 
 //mongoose connection
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/cristal-booksSearch");
-var db = mongnoose.connection;
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/booksSearch"
+);
+
+var db = mongoose.connection;
 db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
 });
